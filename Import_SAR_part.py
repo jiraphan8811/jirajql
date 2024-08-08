@@ -1,6 +1,13 @@
 import pandas as pd
 import openpyxl
 
+'''
+This program add new data into SAR part tracking.xlsx by taking data from QAD and saved into another file then the program compares and replace the changed rows.
+It will only replace the non picked parts so that manual override is possible to only track selected parts.
+'''
+
+
+
 # File paths
 new_file_path = 'C:/Users/Jiraphan.Detchokul/Documents/Updated_QAD_DATA.xlsx'
 existing_file_path = 'C:/Users/Jiraphan.Detchokul/Documents/SAR Parts tracking.xlsx'
@@ -25,7 +32,7 @@ for index, new_row in new_df.iterrows():
         
         # Check if column 6 contains "Picked" or "Not tracked"
         col_6_value = existing_df.iloc[match_index, 5]
-        if col_6_value not in ["Picked", "Not tracked"]:
+        if col_6_value not in ["Picked", "Not tracked", "Pick Status"]:
             # Update the rest of the row in the existing DataFrame with the new DataFrame's row
             for col in range(2, len(new_row)):
                 ws.cell(row=match_index + 2, column=col + 1, value=new_row.iloc[col])

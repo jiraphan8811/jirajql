@@ -4,6 +4,17 @@ from openpyxl.styles import PatternFill
 import os
 from datetime import datetime
 
+'''
+This program load from SAR Parts tracking.xlxs and filtered into a new file that look at PO with no NO and highlight if parts are passed due date.
+
+
+'''
+
+
+
+
+
+
 # Updated file path
 file_path = 'C:/Users/Jiraphan.Detchokul/Documents/SAR Parts tracking.xlsx'
 
@@ -21,7 +32,7 @@ condition2 = df.iloc[:, 12].isna() | df.iloc[:, 12].str.strip().eq('NO PO')
 filtered_df_1 = df[condition1 & condition2]
 
 # Filter rows where column 6 is blank and column 8 is less than column 9
-condition3 = df.iloc[:, 5].isna() & (df.iloc[:, 8] < df.iloc[:, 7])
+condition3 = df.iloc[:, 5].isna() & (df.iloc[:, 7] < df.iloc[:, 8])
 filtered_df_2 = df[condition3]
 
 # Filter rows where column 6 is blank and column 9 is less than today
@@ -31,9 +42,6 @@ filtered_df_3 = df[condition4]
 
 # Combine all filtered rows for output
 combined_filtered_df = pd.concat([filtered_df_1, filtered_df_2, filtered_df_3]).drop_duplicates()
-
-# Remove columns 15 and 16
-combined_filtered_df.drop(combined_filtered_df.columns[[14, 15]], axis=1, inplace=True)
 
 # Add "Day since added" column
 combined_filtered_df['Day since added'] = (pd.to_datetime(today) - pd.to_datetime(combined_filtered_df.iloc[:, 6])).dt.days
